@@ -3,7 +3,7 @@
 const list = document.querySelector('ul');
 
 function getSalary(li) {
-  return Number(li.dataset.salary.replace(/[^\d]/g, ''));
+  return Number(li.dataset.salary.replace(/[^\d.]/g, ''));
 }
 
 function sortList(ul) {
@@ -14,10 +14,26 @@ function sortList(ul) {
 }
 
 function getEmployees(ul) {
-  return Array.from(list.children).map((li) => {
+  return Array.from(ul.children).map((li) => {
+    const nameLi = li.querySelector('.name');
+    const positionLi = li.querySelector('.position');
+    const ageLi = li.querySelector('.age');
+
+    const employeName = nameLi
+      ? nameLi.textContent.trim()
+      : (li.dataset.name || '').trim();
+    const position = positionLi
+      ? positionLi.textContent.trim()
+      : (li.dataset.position || '').trim();
+    const age = ageLi
+      ? Number(ageLi.textContent.trim())
+      : Number(li.dataset.age);
+
     return {
-      name: li.textContent.trim(),
+      name: employeName,
+      position,
       salary: getSalary(li),
+      age,
     };
   });
 }
